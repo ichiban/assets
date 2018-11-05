@@ -30,8 +30,8 @@ func New(strategies ...Strategy) (*Locator, error) {
 }
 
 type Strategy interface {
-	Path() (string, error)
 	io.Closer
+	Path() (string, error)
 }
 
 var DefaultStrategies = []Strategy{Env("ASSETS"), Unzip(), Src("assets")}
