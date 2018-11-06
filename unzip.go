@@ -16,6 +16,9 @@ import (
 
 var localFileHeaderSignature = regexp.MustCompile(`\x50\x4B\x03\x04`) // little endian
 
+// Unzip locates resources by unzipping the executable.
+// If it detects an appended zip file in the executable binary, it extracts resources in a temporary directory and returns the path.
+// Otherwise, it fails.
 func Unzip() Strategy {
 	return &unzipStrategy{}
 }
@@ -97,7 +100,9 @@ func extract(f *zip.File, dir string) error {
 	if err != nil {
 		return errors.Wrapf(err, "failed to open the target file '%s'", path)
 	}
-	defer tf.Close()
+	defer func() {
+		_ = tf.Close()
+	}()
 
 	if _, err := io.Copy(tf, r); err != nil {
 		return errors.Wrap(err, "failed to copy")

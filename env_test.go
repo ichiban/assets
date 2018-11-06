@@ -11,7 +11,7 @@ func TestEnv(t *testing.T) {
 	t.Run("environment variable is not defined", func(t *testing.T) {
 		assert := assert.New(t)
 
-		os.Setenv("key", "")
+		assert.NoError(os.Setenv("key", ""))
 		s := Env("key")
 		_, err := s.Path()
 		assert.Error(err)
@@ -20,7 +20,7 @@ func TestEnv(t *testing.T) {
 	t.Run("environment variable is defined", func(t *testing.T) {
 		assert := assert.New(t)
 
-		os.Setenv("key", "/foo/bar")
+		assert.NoError(os.Setenv("key", "/foo/bar"))
 		s := Env("key")
 		path, err := s.Path()
 		assert.NoError(err)

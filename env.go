@@ -5,6 +5,9 @@ import (
 	"os"
 )
 
+// Env locates resources by environment variable.
+// If the environment variable identified by the key has non-empty string value, it uses the value as the root path to resources.
+// Otherwise, it fails.
 func Env(key string) Strategy {
 	return &envStrategy{key: key}
 }

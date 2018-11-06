@@ -9,6 +9,10 @@ import (
 	"strings"
 )
 
+// Src locates resources by path of the caller of assets.New.
+// Let's assume assets.New is called in /foo/bar/baz.go and dirName is assets, it first tries /foo/bar/assets, then /foo/assets, then /assets.
+// If one of them exists, it returns it.
+// Otherwise, it fails.
 func Src(dirName string) Strategy {
 	return &srcStrategy{dirName: dirName}
 }
