@@ -19,7 +19,7 @@ func TestUnzip(t *testing.T) {
 			g.Unpatch()
 			defer g.Restore()
 
-			return ioutil.ReadFile("testdata/bin/bundled")
+			return ioutil.ReadFile("testdata/bin/hello-bundled")
 		})
 		defer g.Unpatch()
 
@@ -45,7 +45,7 @@ func TestUnzip(t *testing.T) {
 			g.Unpatch()
 			defer g.Restore()
 
-			return ioutil.ReadFile("testdata/bin/zipslip")
+			return ioutil.ReadFile("testdata/bin/hello-zipslip")
 		})
 		defer g.Unpatch()
 
@@ -62,7 +62,7 @@ func TestUnzip(t *testing.T) {
 			g.Unpatch()
 			defer g.Restore()
 
-			return ioutil.ReadFile("testdata/bin/main")
+			return ioutil.ReadFile("testdata/bin/hello")
 		})
 		defer g.Unpatch()
 

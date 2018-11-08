@@ -16,7 +16,7 @@ func main() {
 	}
 	defer l.Close()
 
-	log.Printf("assets: %v", l.Path)
+	log.Printf("assets: %s", l.Path)
 
 	t := template.Must(template.ParseGlob(filepath.Join(l.Path, "templates", "*")))
 	if err := t.ExecuteTemplate(os.Stdout, "hello.tmpl", "World"); err != nil {

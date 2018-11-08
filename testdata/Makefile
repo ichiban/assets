@@ -1,28 +1,31 @@
 .PHONY: all
-all: bin/bundled bin/zipslip
+all: bin/hello-bundled bin/hello-zipslip
 
-bin/bundled: bin/main zip/assets.zip
-	cat bin/main zip/assets.zip > bin/bundled
-	chmod +x bin/bundled
+bin/hello-bundled: bin/hello zip/assets.zip
+	cat bin/hello zip/assets.zip > bin/hello-bundled
+	chmod +x bin/hello-bundled
 
-bin/zipslip: bin/main zip/zipslip.zip
-	cat bin/main zip/zipslip.zip > bin/zipslip
-	chmod +x bin/zipslip
+bin/hello-zipslip: bin/hello zip/zipslip.zip
+	cat bin/hello zip/zipslip.zip > bin/hello-zipslip
+	chmod +x bin/hello-zipslip
 
-zip/assets.zip:
+zip/assets.zip: zip
 	cd assets && zip -vr ../zip/assets.zip .
 
-zip/zipslip.zip:
+zip/zipslip.zip: zip
 	cd zip && zip -vr zipslip.zip ../assets
 
-bin/main:
-	go build -o bin/main
+bin/hello: bin
+	go build -o bin/hello
+
+zip:
+	mkdir -p zip
+
+bin:
+	mkdir -p bin
 
 .PHONY: clean
 clean:
-	rm -f bin/main
-	rm -f zip/assets.zip
-	rm -f zip/zipslip.zip
-	rm -f bin/bundled
-	rm -f bin/zipslip
+	rm -rf bin
+	rm -rf zip
 
