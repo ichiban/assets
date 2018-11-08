@@ -40,3 +40,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+### assets specific
+testdata/bin
+testdata/zip
