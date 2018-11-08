@@ -2,6 +2,7 @@
 Go resource embedding library which doesn't require `go generate` at all.
 
 [![GoDoc](https://godoc.org/github.com/ichiban/assets?status.svg)](https://godoc.org/github.com/ichiban/assets)
+[![Build Status](https://travis-ci.org/ichiban/assets.svg?branch=master)](https://travis-ci.org/ichiban/assets)
 
 ## Overview
 
