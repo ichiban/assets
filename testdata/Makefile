@@ -3,10 +3,12 @@ all: bin/hello-bundled bin/hello-zipslip
 
 bin/hello-bundled: bin/hello zip/assets.zip
 	cat bin/hello zip/assets.zip > bin/hello-bundled
+	zip -A bin/hello-bundled
 	chmod +x bin/hello-bundled
 
 bin/hello-zipslip: bin/hello zip/zipslip.zip
 	cat bin/hello zip/zipslip.zip > bin/hello-zipslip
+	zip -A bin/hello-zipslip
 	chmod +x bin/hello-zipslip
 
 zip/assets.zip: zip

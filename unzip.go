@@ -2,19 +2,15 @@ package assets
 
 import (
 	"archive/zip"
-	"bytes"
 	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strings"
 
 	"github.com/pkg/errors"
 )
-
-var localFileHeaderSignature = regexp.MustCompile(`\x50\x4B\x03\x04`) // little endian
 
 // Unzip locates resources by unzipping the executable.
 // If it detects an appended zip file in the executable binary, it extracts resources in a temporary directory and returns the path.
@@ -33,7 +29,7 @@ func (s *unzipStrategy) Path() (string, error) {
 		return "", errors.Wrap(err, "failed to get executable")
 	}
 
-	r, err := reader(exec)
+	r, err := zip.OpenReader(exec)
 	if err != nil {
 		return "", errors.Wrap(err, "failed to get zip reader")
 	}
@@ -58,22 +54,6 @@ func (s *unzipStrategy) Close() error {
 		return nil
 	}
 	return os.RemoveAll(s.tempDir)
-}
-
-func reader(filename string) (*zip.Reader, error) {
-	b, err := ioutil.ReadFile(filename)
-	if err != nil {
-		return nil, errors.Wrapf(err, "failed to read file: %s", filename)
-	}
-	for _, r := range localFileHeaderSignature.FindAllIndex(b, -1) {
-		r, err := zip.NewReader(bytes.NewReader(b[r[0]:]), int64(len(b)-r[0]))
-		if err != nil {
-			continue
-		}
-
-		return r, nil
-	}
-	return nil, zip.ErrFormat
 }
 
 func extract(f *zip.File, dir string) error {
