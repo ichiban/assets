@@ -1,6 +1,7 @@
 package assets
 
 import (
+	"archive/zip"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -15,11 +16,11 @@ func TestUnzip(t *testing.T) {
 		assert := assert.New(t)
 
 		var g *monkey.PatchGuard
-		g = monkey.Patch(ioutil.ReadFile, func(string) ([]byte, error) {
+		g = monkey.Patch(zip.OpenReader, func(string) (*zip.ReadCloser, error) {
 			g.Unpatch()
 			defer g.Restore()
 
-			return ioutil.ReadFile("testdata/bin/hello-bundled")
+			return zip.OpenReader("testdata/bin/hello-bundled")
 		})
 		defer g.Unpatch()
 

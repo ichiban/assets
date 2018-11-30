@@ -84,6 +84,8 @@ We need to enter `assets` directory to make a proper zip file.
 $ mkdir -p zip
 $ cd assets
 $ zip -r ../zip/assets.zip .
+  adding: templates/ (stored 0%)
+  adding: templates/hello.tmpl (stored 0%)
 $ cd ..
 ```
 
@@ -101,9 +103,13 @@ Archive:  zip/assets.zip
 ```
 
 Finally, we can bundle resources by `cat` the binary and the zip file.
+Prepending an executable makes the zip offset values off by the size of the executable.
+We can fix the offsets by `zip -A` (`zip --adjust-sfx`).
 
 ```
 $ cat bin/hello zip/assets.zip > bin/hello-bundled
+$ zip -A bin/hello-bundled 
+Zip entry offsets appear off by 3345496 bytes - correcting...
 $ chmod +x bin/hello-bundled
 ```
 
@@ -112,14 +118,18 @@ Interestingly, the bundled binary is an executable and also a zip file.
 ```
 $ unzip -l bin/hello-bundled 
 Archive:  bin/hello-bundled
-warning [bin/hello-bundled]:  3722560 extra bytes at beginning or within zipfile
-  (attempting to process anyway)
   Length      Date    Time    Name
 ---------  ---------- -----   ----
         0  11-05-2018 22:31   templates/
        14  11-05-2018 21:31   templates/hello.tmpl
 ---------                     -------
        14                     2 files
+```
+
+```
+$ bin/hello-bundled 
+2018/11/30 16:22:13 assets: /var/folders/xt/6z9sk1dx1d734ltxxst16_h00000gn/T/hello-bundled882816570
+Hello, World!
 ```
 
 ## License
