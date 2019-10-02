@@ -24,7 +24,7 @@ type unzipStrategy struct {
 }
 
 func (s *unzipStrategy) Path() (string, error) {
-	exec, err := os.Executable()
+	exec, err := executable()
 	if err != nil {
 		return "", errors.Wrap(err, "failed to get executable")
 	}
@@ -90,3 +90,5 @@ func extract(f *zip.File, dir string) error {
 
 	return nil
 }
+
+var executable = os.Executable
