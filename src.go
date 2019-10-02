@@ -22,7 +22,7 @@ type srcStrategy struct {
 }
 
 func (s *srcStrategy) Path() (string, error) {
-	_, file, _, ok := runtime.Caller(2)
+	_, file, _, ok := caller(2)
 	if !ok {
 		return "", errors.New("failed to identify caller")
 	}
@@ -40,3 +40,5 @@ func (s *srcStrategy) Path() (string, error) {
 func (s *srcStrategy) Close() error {
 	return nil
 }
+
+var caller = runtime.Caller

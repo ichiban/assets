@@ -1,13 +1,10 @@
 package assets
 
 import (
-	"archive/zip"
-	"io/ioutil"
 	"os"
 	"strings"
 	"testing"
 
-	"bou.ke/monkey"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,14 +12,11 @@ func TestUnzip(t *testing.T) {
 	t.Run("bundled", func(t *testing.T) {
 		assert := assert.New(t)
 
-		var g *monkey.PatchGuard
-		g = monkey.Patch(zip.OpenReader, func(string) (*zip.ReadCloser, error) {
-			g.Unpatch()
-			defer g.Restore()
-
-			return zip.OpenReader("testdata/bin/hello-bundled")
-		})
-		defer g.Unpatch()
+		e := executable
+		defer func() { executable = e }()
+		executable = func() (string, error) {
+			return "testdata/bin/hello-bundled", nil
+		}
 
 		s := Unzip()
 		p, err := s.Path()
@@ -41,14 +35,11 @@ func TestUnzip(t *testing.T) {
 	t.Run("zipslip", func(t *testing.T) {
 		assert := assert.New(t)
 
-		var g *monkey.PatchGuard
-		g = monkey.Patch(ioutil.ReadFile, func(string) ([]byte, error) {
-			g.Unpatch()
-			defer g.Restore()
-
-			return ioutil.ReadFile("testdata/bin/hello-zipslip")
-		})
-		defer g.Unpatch()
+		e := executable
+		defer func() { executable = e }()
+		executable = func() (string, error) {
+			return "testdata/bin/hello-zipslip", nil
+		}
 
 		s := Unzip()
 		_, err := s.Path()
@@ -58,14 +49,11 @@ func TestUnzip(t *testing.T) {
 	t.Run("non-zip", func(t *testing.T) {
 		assert := assert.New(t)
 
-		var g *monkey.PatchGuard
-		g = monkey.Patch(ioutil.ReadFile, func(string) ([]byte, error) {
-			g.Unpatch()
-			defer g.Restore()
-
-			return ioutil.ReadFile("testdata/bin/hello")
-		})
-		defer g.Unpatch()
+		e := executable
+		defer func() { executable = e }()
+		executable = func() (string, error) {
+			return "testdata/bin/hello", nil
+		}
 
 		s := Unzip()
 		_, err := s.Path()
