@@ -1,6 +1,5 @@
 .PHONY: test
 test:
-	go get -t ./...
 	@$(MAKE) -C testdata
 	go test
 
